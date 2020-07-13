@@ -1,6 +1,7 @@
 # Lithe Audio Command Server (In Development)
 
 Server for discovering and controlling media play back on Lithe Audio Wifi speakers written in Deno
+_Note: This is an unofficial project.
 
 ## Prerequisites
 Lithe Audio Wifi Speakers
