@@ -16,13 +16,13 @@ const ids = Object.keys(speakers);
 type SpeakerMap = {
   [uuid: string]: {
     name: string;
-    ip: string;
+    host: string;
   };
 };
 const speakerMap = ids.reduce((acc, id) => {
   const { friendlyName, presentationURL } = speakers[id];
   if (friendlyName.content && presentationURL.content) {
-    acc[id] = { name: friendlyName.content, ip: presentationURL.content };
+    acc[id] = { name: friendlyName.content, host: presentationURL.content };
   }
   return acc;
 }, {} as SpeakerMap);
@@ -33,7 +33,7 @@ function deviceApi<T extends object>(
 ) {
   api.post<{ uuid: string; ip: string } & T>(`{uuid}${path}`, (req, params) => {
     if (speakerMap[params.uuid]) {
-      const url = new URL(speakerMap[params.uuid].ip);
+      const url = new URL(speakerMap[params.uuid].host);
       params.ip = url.hostname;
       callback(req, params);
     } else {
@@ -59,7 +59,7 @@ api.get<{ uuid: string }>(
   "{uuid}/volume",
   async (req: ServerRequest, { uuid }) => {
     if (speakerMap[uuid]) {
-      const url = new URL(speakerMap[uuid].ip);
+      const url = new URL(speakerMap[uuid].host);
       const status = await getVolume(url.hostname);
       return json(req, { uuid, status, ip: url.hostname });
     } else {
@@ -69,9 +69,8 @@ api.get<{ uuid: string }>(
 );
 
 api.get<{ uuid: string }>("{uuid}", async (req: ServerRequest, { uuid }) => {
-  console.log(uuid);
   if (speakerMap[uuid]) {
-    const url = new URL(speakerMap[uuid].ip);
+    const url = new URL(speakerMap[uuid].host);
     const status = await getStatus(url.hostname);
     return json(req, { uuid, ...status, ip: url.hostname });
   } else {
