@@ -1,14 +1,15 @@
 # Lithe Audio Command Server (In Development)
 
 Server for discovering and controlling media play back on Lithe Audio Wifi speakers written in Deno
-_Note: This is an unofficial project.
+
+**_NOTE:_** This is an unofficial project.
 
 ## Prerequisites
 Lithe Audio Wifi Speakers
 Deno
 
 ## Getting Started
-Following the instructions for installing (Deno)[https://deno.land/#getting-started].
+Following the instructions for installing [Deno](https://deno.land/#getting-started).
 To run the Lithe Audio Command Server run `deno run  --allow-net --unstable index.ts --port 3333`
 This will start the server on port 3333. 
 Port 6811 will also need to be open for uPnP.
