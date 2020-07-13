@@ -42,10 +42,10 @@ function pathRegex(
     newPath = newPath.replace(m[0], "(.+)");
     paramsNames.push(m[1]);
   }
-  
+
   if (paramsNames.length) {
     return {
-      pattern: newPath + "$",
+      pattern: "/" + newPath + "$",
       paramsNames,
       callback,
       path,
@@ -80,7 +80,6 @@ export default class API {
     callback: ResponseCallback<any>
   ) {
     const view = pathRegex(path, callback);
-    console.log(view)
     if (isCallback(view)) {
       this.routes[method].path[path] = view;
     } else {
@@ -138,8 +137,9 @@ export default class API {
     const server = this.apiServe({ port: port });
 
     for await (const req of (server as unknown) as Array<ServerRequest>) {
+      console.log(req.method + ":" + req.url, req.headers.get("user-agent"));
       if (!this.respond(req)) {
-        return req.respond({
+        req.respond({
           body: JSON.stringify({ error: "Not Found" }),
           status: 404,
           headers: new Headers({
