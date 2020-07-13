@@ -1,6 +1,6 @@
 
 import { assertStrictEq, assertEquals, assertArrayContains } from "https://deno.land/std/testing/asserts.ts"
-import API, { ServerRequest, Serve, ResponseCallback } from '../server.ts'
+import API, { Serve } from '../server.ts'
 import mockServe from './mock.serve.ts'
 
 function buildApi(response?: Serve) {
@@ -56,12 +56,12 @@ Deno.test('post callback is added to the routes regex object', () => {
     const callback = () => {}
     api.post('/test/{var}', callback)
     const expected = {
-        pattern: "/test/([a-zA-Z0-9]+)$",
+        pattern: "/test/(.+)$",
         paramsNames: [ "var" ],
         path: '/test/{var}',
         callback
     }
-    assertEquals(api.routes.POST.regex['/test/([a-zA-Z0-9]+)$'], expected)
+    assertEquals(api.routes.POST.regex['/test/(.+)$'], expected)
 })
 
 
@@ -70,12 +70,12 @@ Deno.test('get callback is added to the routes regex object', () => {
     const callback = () => {}
     api.get('/test/{var}', callback)
     const expected = {
-        pattern: "/test/([a-zA-Z0-9]+)$",
+        pattern: "/test/(.+)$",
         paramsNames: [ "var" ],
         path: '/test/{var}',
         callback,
     }
-    assertEquals(api.routes.GET.regex['/test/([a-zA-Z0-9]+)$'], expected)
+    assertEquals(api.routes.GET.regex['/test/(.+)$'], expected)
 })
 
 Deno.test('url params are passed into callback', async () => {
